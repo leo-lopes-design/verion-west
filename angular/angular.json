@@ -1,0 +1,59 @@
+{
+  "$schema": "../node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "verion-west": {
+      "projectType": "library",
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "wu",
+      "architect": {
+        "build-lib": {
+          "builder": "@angular/build:ng-packagr",
+          "options": { "project": "ng-package.json", "tsConfig": "tsconfig.lib.json" }
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "buildTarget": "verion-west:build-lib",
+            "tsConfig": "tsconfig.spec.json",
+            "runner": "vitest"
+          }
+        },
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/app",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "tsConfig": ".storybook/tsconfig.json",
+            "styles": ["src/tokens/tokens.css", ".storybook/preview.css"],
+            "scripts": [],
+            "sourceMap": false,
+            "optimization": true
+          }
+        },
+        "storybook": {
+          "builder": "@storybook/angular:start-storybook",
+          "options": {
+            "configDir": ".storybook",
+            "browserTarget": "verion-west:build",
+            "compodoc": false,
+            "port": 6006,
+            "open": false
+          }
+        },
+        "build-storybook": {
+          "builder": "@storybook/angular:build-storybook",
+          "options": {
+            "configDir": ".storybook",
+            "browserTarget": "verion-west:build",
+            "compodoc": false,
+            "outputDir": "../public/storybook"
+          }
+        }
+      }
+    }
+  }
+}

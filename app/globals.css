@@ -1,0 +1,196 @@
+/* Import order is cascade order: shared components first, then each area. */
+@import './tokens.css';
+@import './components.css';
+@import './showcase.css';
+@import './marketing.css';
+@import './personas.css';
+@import './handoff.css';
+@import './intro.css';
+@import './device.css';
+@import './prototype.css';
+
+/* next/font hashes the family name, so the token's literal "Archivo" would never
+   match the face that actually loaded. The token NAME stays the contract; only
+   its value is platform-specific. The generated shorthand appends the fallbacks. */
+:root {
+  --wu-ref-font-family-display: var(--font-archivo);
+  --wu-ref-font-family-body: var(--font-roboto);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--wu-surface-page);
+  color: var(--wu-text-primary);
+  font: var(--wu-font-body-01);
+  -webkit-font-smoothing: antialiased;
+  transition:
+    background-color var(--wu-ref-motion-duration-base) var(--wu-ref-motion-ease-standard),
+    color var(--wu-ref-motion-duration-base) var(--wu-ref-motion-ease-standard);
+}
+
+img,
+svg {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: var(--wu-text-link);
+}
+
+/* Every interactive thing gets the same ring, from the same token. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--wu-border-focus);
+  outline-offset: 2px;
+  border-radius: var(--wu-radius-control);
+}
+
+/* ---------- accessibility utilities ---------- */
+/* Read by assistive technology, invisible on screen. */
+.visually-hidden,
+.skip-link:not(:focus) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* The first stop for a keyboard, above the opening overlay (z-index 100). */
+.skip-link {
+  position: absolute;
+  top: var(--wu-ref-space-sm);
+  left: var(--wu-ref-space-lg);
+  z-index: 200;
+  padding: var(--wu-ref-space-sm) var(--wu-ref-space-lg);
+  background: var(--wu-surface-raised);
+  color: var(--wu-text-primary);
+  font: var(--wu-font-label-01);
+  border-radius: var(--wu-radius-control);
+  box-shadow: var(--wu-elevation-md);
+}
+
+/* ---------- typography roles ----------
+   One class per text style the pages use. The font shorthand is built in
+   tokens.css from type/<role>/size + type/<role>/line, so changing the role
+   token in Figma and re-running the export moves every one of these at once. */
+.t-display-h2 {
+  font: var(--wu-font-display-h2);
+  margin: 0;
+}
+.t-display-h3 {
+  font: var(--wu-font-display-h3);
+  margin: 0;
+}
+.t-display-h4 {
+  font: var(--wu-font-display-h4);
+  margin: 0;
+}
+.t-display-h5 {
+  font: var(--wu-font-display-h5);
+  margin: 0;
+}
+.t-display-h6 {
+  font: var(--wu-font-display-h6);
+  margin: 0;
+}
+.t-label-01 {
+  font: var(--wu-font-label-01);
+  margin: 0;
+}
+/* No text-transform: a Figma text style cannot carry one, so any caps in the
+   file are typed characters. Selectors whose content really is typed in caps
+   (the marketing footer columns, the payment card's labels) keep the rule. */
+.t-label-02 {
+  font: var(--wu-font-label-02);
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+.t-body-01 {
+  font: var(--wu-font-body-01);
+  margin: 0;
+}
+.t-body-02 {
+  font: var(--wu-font-body-02);
+  margin: 0;
+}
+.t-body-03 {
+  font: var(--wu-font-body-03);
+  margin: 0;
+}
+
+.text-secondary {
+  color: var(--wu-text-secondary);
+}
+
+/* ---------- layout primitives ---------- */
+.wrap {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: var(--wu-ref-space-lg);
+}
+
+@media (min-width: 768px) {
+  .wrap {
+    padding-inline: var(--wu-ref-space-2xl);
+  }
+}
+
+/* The marketing comp is 1440 wide with 48px gutters. Only the landing route
+   takes it; the reading routes stay at 1200 because they are read, not scanned. */
+.wrap--wide {
+  max-width: 1440px;
+}
+
+@media (min-width: 768px) {
+  .wrap--wide {
+    padding-inline: var(--wu-ref-space-4xl);
+  }
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- route crossfade ----------
+   template.tsx remounts on every navigation; a short fade, not the opening
+   again, so an instant client-side navigation never turns into a wait. */
+.routefade {
+  animation: routefade var(--wu-ref-motion-duration-base) var(--wu-ref-motion-ease-standard);
+}
+
+@keyframes routefade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .routefade {
+    animation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

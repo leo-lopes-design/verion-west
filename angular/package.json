@@ -1,0 +1,55 @@
+{
+  "name": "@verion-west/angular",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The Verion West design system in Angular. A demonstration that the token layer survives a change of framework — the same primitives and semantic tokens, the same two modes, none of it rewritten.",
+  "license": "MIT",
+  "exports": {
+    "./tokens": {
+      "sass": "./tokens/_tokens.scss"
+    },
+    "./tokens/tokens.css": "./tokens/tokens.css"
+  },
+  "scripts": {
+    "tokens": "cd .. && node scripts/build-tokens.mjs",
+    "storybook": "npm run tokens && ng run verion-west:storybook",
+    "build": "npm run tokens && ng run verion-west:build-storybook",
+    "build:lib": "npm run tokens && ng run verion-west:build-lib && node scripts/verify-pack.mjs",
+    "test": "npm run tokens && ng test --watch=false",
+    "lint": "eslint ."
+  },
+  "peerDependencies": {
+    "@angular/common": "^21.0.0",
+    "@angular/core": "^21.0.0",
+    "@angular/forms": "^21.0.0"
+  },
+  "dependencies": {
+    "tslib": "^2.8.1"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^21.2.0",
+    "@angular-devkit/core": "^21.2.0",
+    "@angular/build": "^21.2.24",
+    "@angular/cli": "^21.2.0",
+    "@angular/common": "^21.2.0",
+    "@angular/compiler": "^21.2.0",
+    "@angular/compiler-cli": "^21.2.0",
+    "@angular/core": "^21.2.0",
+    "@angular/forms": "^21.2.24",
+    "@angular/platform-browser": "^21.2.0",
+    "@angular/platform-browser-dynamic": "^21.2.0",
+    "@storybook/addon-a11y": "^10.6.0",
+    "@storybook/addon-docs": "^10.6.0",
+    "@storybook/angular": "^10.6.0",
+    "angular-eslint": "^21.4.0",
+    "eslint": "^9.39.5",
+    "jsdom": "^30.1.1",
+    "ng-packagr": "^21.2.7",
+    "rxjs": "^7.8.1",
+    "storybook": "^10.6.0",
+    "typescript": "~5.9.0",
+    "typescript-eslint": "^8.70.1",
+    "vitest": "^4.1.11",
+    "zone.js": "^0.15.0"
+  }
+}

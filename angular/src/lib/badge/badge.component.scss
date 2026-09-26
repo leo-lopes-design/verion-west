@@ -1,0 +1,32 @@
+@use '../../tokens/tokens' as *;
+
+:host {
+  display: inline-flex;
+}
+
+.wu-badge {
+  display: inline-flex;
+  align-items: center;
+  font: $wu-font-label-02;
+  /* 0.04em: the Figma label style carries tracking and the token set has no letter-spacing tier. */
+  letter-spacing: 0.04em;
+  border-radius: $wu-radius-pill;
+  padding: $wu-ref-space-xs $wu-ref-space-md;
+  white-space: nowrap;
+}
+.wu-badge--info {
+  background: $wu-feedback-info-bg;
+  color: $wu-feedback-info-fg;
+}
+.wu-badge--success {
+  background: $wu-feedback-success-bg;
+  color: $wu-feedback-success-fg;
+}
+.wu-badge--warning {
+  background: $wu-feedback-warning-bg;
+  color: $wu-feedback-warning-fg;
+}
+.wu-badge--error {
+  background: $wu-feedback-error-bg;
+  color: $wu-feedback-error-fg;
+}

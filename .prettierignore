@@ -1,0 +1,12 @@
+node_modules/
+.next/
+dist/
+public/storybook/
+public/artifacts/
+angular/.angular/
+angular/dist/
+angular/src/tokens/
+app/tokens.css
+tokens/tokens.json
+tokens/figma-export.json
+package-lock.json

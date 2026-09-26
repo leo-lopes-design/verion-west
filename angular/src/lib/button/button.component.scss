@@ -1,0 +1,132 @@
+@use '../../tokens/tokens' as *;
+
+:host {
+  display: inline-flex;
+}
+:host(.wu-button--block) {
+  display: flex;
+}
+
+.wu-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $wu-ref-space-xs;
+  border: 0;
+  cursor: pointer;
+  white-space: nowrap;
+  border-radius: $wu-radius-control;
+  font: $wu-font-label-01;
+  transition:
+    background-color $wu-ref-motion-duration-fast $wu-ref-motion-ease-standard,
+    color $wu-ref-motion-duration-fast $wu-ref-motion-ease-standard;
+}
+.wu-btn--lg {
+  padding: $wu-ref-space-md $wu-ref-space-xl;
+  min-height: $wu-ref-space-4xl;
+}
+.wu-btn--md {
+  padding: $wu-ref-space-sm $wu-ref-space-lg;
+  min-height: $wu-ref-space-3xl;
+}
+.wu-btn--block {
+  width: 100%;
+}
+
+.wu-btn--primary {
+  background: $wu-action-primary-bg;
+  color: $wu-action-primary-fg;
+}
+.wu-btn--secondary {
+  background: $wu-action-secondary-bg;
+  color: $wu-action-secondary-fg;
+}
+.wu-btn--tertiary {
+  background: $wu-action-tertiary-bg;
+  color: $wu-action-tertiary-fg;
+  box-shadow: inset 0 0 0 $wu-ref-border-width-hairline $wu-border-default;
+}
+
+.wu-btn--primary:hover:not(:disabled) {
+  background: $wu-action-primary-bg-hover;
+}
+.wu-btn--secondary:hover:not(:disabled) {
+  background: $wu-action-secondary-bg-hover;
+}
+.wu-btn--tertiary:hover:not(:disabled) {
+  background: $wu-action-tertiary-bg-hover;
+}
+
+.wu-btn--primary:active:not(:disabled) {
+  background: $wu-action-primary-bg-active;
+}
+.wu-btn--secondary:active:not(:disabled) {
+  background: $wu-action-secondary-bg-active;
+}
+.wu-btn--tertiary:active:not(:disabled) {
+  background: $wu-action-tertiary-bg-active;
+}
+
+.wu-btn:focus-visible {
+  outline: $wu-ref-border-width-thick solid $wu-border-focus;
+  outline-offset: $wu-ref-space-2xs;
+}
+
+/* Disabled text is exempt from WCAG 1.4.3, and this is the one place the system
+   leans on that exemption deliberately rather than by accident. */
+.wu-btn--primary:disabled {
+  background: $wu-action-primary-bg-disabled;
+  color: $wu-action-primary-fg-disabled;
+  cursor: not-allowed;
+}
+.wu-btn--secondary:disabled {
+  background: $wu-action-secondary-bg-disabled;
+  color: $wu-action-secondary-fg-disabled;
+  cursor: not-allowed;
+}
+.wu-btn--tertiary:disabled {
+  background: $wu-action-tertiary-bg-disabled;
+  color: $wu-action-tertiary-fg-disabled;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.wu-btn__spinner {
+  width: $wu-ref-icon-size-sm;
+  height: $wu-ref-icon-size-sm;
+  border-radius: $wu-radius-pill;
+  border: $wu-ref-border-width-thick solid currentColor;
+  border-right-color: transparent;
+  /* 700ms: one turn per loop; no duration token describes a continuous rotation. */
+  animation: wu-spin 700ms linear infinite;
+}
+@keyframes wu-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+/* The loop is the one thing a reduced-motion preference cannot be asked to
+   tolerate, so it stops rather than shortens. 0.5 has no opacity token; it only
+   marks the stopped ring as a placeholder. */
+@media (prefers-reduced-motion: reduce) {
+  .wu-btn__spinner {
+    animation: none;
+    border-right-color: currentColor;
+    opacity: 0.5;
+  }
+}
+
+/* The standard visually-hidden recipe: in the accessibility tree, off the screen.
+   The 1px values are part of the technique, not design values. */
+.wu-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

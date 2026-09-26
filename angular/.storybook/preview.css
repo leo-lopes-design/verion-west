@@ -1,0 +1,23 @@
+/* Storybook chrome only; nothing here belongs to the design system. Stories sit on
+   the page surface so dark mode does not render on Storybook's white, and body takes
+   the product's body type role so components inherit the line-height they ship with. */
+body {
+  background: var(--wu-surface-page);
+  color: var(--wu-text-primary);
+  font: var(--wu-font-body-01);
+  -webkit-font-smoothing: antialiased;
+  padding: 16px;
+  transition: background-color 250ms cubic-bezier(0.2, 0, 0, 1);
+}
+.sb-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 420px;
+}
+.sb-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}

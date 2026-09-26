@@ -1,0 +1,419 @@
+/* Screens inside the device. Same tokens as everything else; the fixed heights
+   are the Figma frame's own (nav 48, status bar 46, input control 64, key 46). */
+
+.scr {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: var(--wu-surface-page);
+}
+
+.scr__statusbar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 46px;
+  padding: 16px var(--wu-ref-space-xl) var(--wu-ref-space-sm);
+  font: var(--wu-font-body-03);
+  font-weight: 500;
+  color: var(--wu-text-primary);
+}
+/* The glyphs carry no colour of their own — currentColor comes from the bar,
+   which comes from text/primary, which turns with the theme. */
+.scr__signal {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  color: var(--wu-text-primary);
+}
+.scr__signal svg {
+  display: block;
+}
+.scr__time {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+}
+
+.scr__nav {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--wu-ref-space-sm);
+  height: 48px;
+  min-height: 48px;
+  padding: var(--wu-ref-space-md) var(--wu-ref-space-lg);
+}
+/* The spacer matches the button, so a title with one button stays centred. */
+.scr__navbtn,
+.scr__navspacer {
+  width: 24px;
+  height: 24px;
+  flex: none;
+}
+.scr__navbtn {
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: var(--wu-radius-pill);
+  background: transparent;
+  color: var(--wu-text-primary);
+  cursor: pointer;
+}
+.scr__navbtn:hover {
+  background: var(--wu-action-tertiary-bg-hover);
+}
+.scr__navbtn svg {
+  width: var(--wu-ref-icon-size-md);
+  height: var(--wu-ref-icon-size-md);
+}
+.scr__navtitle {
+  flex: 1;
+  margin: 0;
+  text-align: center;
+  font: var(--wu-font-label-01);
+  color: var(--wu-text-primary);
+}
+.scr__navtitle--start {
+  text-align: left;
+  padding-left: var(--wu-ref-space-xs);
+}
+
+.scr__body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-lg);
+  padding: var(--wu-ref-space-lg);
+}
+
+.scr__footer {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-sm);
+  padding: var(--wu-ref-space-md) var(--wu-ref-space-lg) var(--wu-ref-space-xl);
+  background: var(--wu-surface-page);
+  border-top: 1px solid var(--wu-border-subtle);
+}
+.scr__footer--bare {
+  border-top: 0;
+  gap: 0;
+  padding: var(--wu-ref-space-sm) var(--wu-ref-space-lg) var(--wu-ref-space-md);
+}
+
+/* ---------------- tab bar ---------------- */
+.tabbar {
+  flex: none;
+  display: grid;
+  /* Column count follows TABS, so adding a tab needs no stylesheet edit. */
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  border-top: 1px solid var(--wu-border-subtle);
+  background: var(--wu-surface-page);
+  padding-bottom: var(--wu-ref-space-lg);
+}
+.tabbar button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: var(--wu-ref-space-sm) 0 var(--wu-ref-space-xs);
+  border: 0;
+  background: transparent;
+  color: var(--wu-text-secondary);
+  font: var(--wu-font-body-03);
+  cursor: pointer;
+}
+.tabbar button svg {
+  width: var(--wu-ref-icon-size-md);
+  height: var(--wu-ref-icon-size-md);
+}
+.tabbar button[aria-current='page'] {
+  color: var(--wu-text-primary);
+}
+
+/* ---------------- shared bits ---------------- */
+.avatar {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border-radius: var(--wu-radius-pill);
+  display: grid;
+  place-items: center;
+  background: var(--wu-surface-brand);
+  color: var(--wu-text-on-brand);
+  font: var(--wu-font-body-02);
+  font-weight: 500;
+}
+.avatar--sm {
+  width: 32px;
+  height: 32px;
+  font: var(--wu-font-body-03);
+}
+
+.tile {
+  display: flex;
+  align-items: center;
+  gap: var(--wu-ref-space-md);
+  width: 100%;
+  text-align: left;
+  padding: var(--wu-ref-space-md);
+  border: 1px solid var(--wu-border-subtle);
+  border-radius: var(--wu-radius-control);
+  background: var(--wu-surface-raised);
+  color: var(--wu-text-primary);
+  cursor: pointer;
+  font: inherit;
+  transition:
+    border-color var(--wu-ref-motion-duration-fast) var(--wu-ref-motion-ease-standard),
+    background-color var(--wu-ref-motion-duration-fast) var(--wu-ref-motion-ease-standard);
+}
+.tile:hover {
+  background: var(--wu-action-tertiary-bg-hover);
+}
+.tile[aria-pressed='true'],
+.tile[data-selected='true'] {
+  border-color: var(--wu-border-strong);
+  box-shadow: inset 0 0 0 1px var(--wu-border-strong);
+}
+.tile__text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.tile__title {
+  font: var(--wu-font-body-02);
+  color: var(--wu-text-primary);
+}
+.tile__sub {
+  font: var(--wu-font-body-03);
+  color: var(--wu-text-secondary);
+}
+.tile__meta {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-end;
+  flex: none;
+}
+.tile__amount {
+  font: var(--wu-font-body-02);
+  color: var(--wu-text-primary);
+}
+/* inset, not sunken: this box is recessed inside a RAISED tile, not on the page.
+   In Dark, where page and raised separate, sunken would put a near-black hole
+   inside the tile. */
+.tile__icon {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border-radius: var(--wu-radius-control);
+  display: grid;
+  place-items: center;
+  background: var(--wu-surface-inset);
+  color: var(--wu-text-primary);
+}
+.tile__icon svg {
+  width: var(--wu-ref-icon-size-md);
+  height: var(--wu-ref-icon-size-md);
+}
+
+.sectionlabel {
+  font: var(--wu-font-label-02);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--wu-text-secondary);
+}
+
+/* ---------------- amount screen ---------------- */
+.keypad {
+  flex: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--wu-space-keypad-gutter);
+  background: var(--wu-surface-sunken);
+  padding: var(--wu-ref-space-sm) var(--wu-ref-space-xs) var(--wu-ref-space-lg);
+}
+.keypad button {
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  /* radius/key, not radius/control: at the control radius twelve keys six
+     pixels apart read as a pile of pills. */
+  border-radius: var(--wu-radius-key);
+  background: var(--wu-surface-raised);
+  color: var(--wu-text-primary);
+  font: var(--wu-font-title-04);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background-color var(--wu-ref-motion-duration-instant)
+    var(--wu-ref-motion-ease-standard);
+}
+.keypad button:active {
+  background: var(--wu-action-tertiary-bg-active);
+}
+.keypad button.is-bare {
+  background: transparent;
+}
+.keypad button svg {
+  width: var(--wu-ref-icon-size-md);
+  height: var(--wu-ref-icon-size-md);
+}
+
+/* Figma's Input instance is 112 tall: 16 label + 8 + 64 control + 8 + 16 helper. */
+.scr .field__control {
+  min-height: 64px;
+}
+/* The trailing currency picker is the tall part of the control. */
+.scr .field__control .selectwrap {
+  height: 40px;
+}
+
+/* ---------------- success ---------------- */
+.success {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--wu-ref-space-lg);
+  text-align: center;
+  padding: var(--wu-ref-space-xl);
+}
+.success__badge {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--wu-radius-pill);
+  display: grid;
+  place-items: center;
+  background: var(--wu-feedback-success-bg);
+  color: var(--wu-feedback-success-fg);
+}
+.success__badge svg {
+  width: 34px;
+  height: 34px;
+}
+.success__ref {
+  font-family: ui-monospace, monospace;
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  color: var(--wu-text-primary);
+}
+
+/* ---------------- misc ---------------- */
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-md);
+  background: var(--wu-surface-sunken);
+  border-radius: var(--wu-radius-control);
+  padding: var(--wu-ref-space-lg);
+}
+.summary__total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-top: var(--wu-ref-space-md);
+  border-top: 1px solid var(--wu-border-subtle);
+}
+.scr .summary {
+  gap: var(--wu-ref-space-sm);
+}
+
+.ratestrip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--wu-ref-space-md);
+  padding: var(--wu-ref-space-md) var(--wu-ref-space-lg);
+  background: var(--wu-surface-sunken);
+  border-radius: var(--wu-radius-control);
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--wu-ref-space-sm);
+  text-align: center;
+  padding: var(--wu-ref-space-4xl) var(--wu-ref-space-lg);
+  color: var(--wu-text-secondary);
+}
+
+/* On Settings the switch sits inside a card, which is a raised surface. */
+.scr .themeswitch {
+  background: var(--wu-surface-inset);
+}
+
+.scr__fade {
+  animation: scrIn var(--wu-ref-motion-duration-base) var(--wu-ref-motion-ease-enter);
+}
+@keyframes scrIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------------- prototype page layout ---------------- */
+.proto {
+  display: flex;
+  gap: var(--wu-ref-space-5xl);
+  align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.proto__guide {
+  flex: 1;
+  min-width: 280px;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-lg);
+  position: sticky;
+  top: var(--wu-ref-space-5xl);
+}
+.proto__steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-lg);
+}
+.proto__steps li {
+  display: flex;
+  gap: var(--wu-ref-space-md);
+  align-items: flex-start;
+}
+.proto__num {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--wu-radius-pill);
+  display: grid;
+  place-items: center;
+  background: var(--wu-surface-brand);
+  color: var(--wu-text-on-brand);
+  font: var(--wu-font-body-03);
+  font-weight: 500;
+}
+
+@media (max-width: 1080px) {
+  .proto__guide {
+    position: static;
+  }
+}

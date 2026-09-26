@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm run typecheck
+      - run: npm test
+      # tokens, then Storybook, then the Next.js production build
+      - run: npm run build
+      - run: npm run build:lib
+
+      - run: npx playwright install --with-deps chromium
+      - name: Start the production server on :3210
+        run: |
+          npm run start:qa > next.log 2>&1 &
+          for i in $(seq 1 60); do
+            curl -sf http://localhost:3210 > /dev/null && exit 0
+            sleep 1
+          done
+          echo "server did not answer within 60s"; cat next.log; exit 1
+      - run: npm run test:e2e

@@ -1,0 +1,24 @@
+@use '../../tokens/tokens' as *;
+
+:host {
+  display: block;
+}
+
+.wu-row {
+  display: flex;
+  gap: $wu-ref-space-md;
+  align-items: baseline;
+}
+.wu-row__label {
+  font: $wu-font-body-03;
+  color: $wu-text-secondary;
+  flex: 1;
+}
+.wu-row__value {
+  font: $wu-font-body-03;
+  color: $wu-text-primary;
+  text-align: right;
+}
+.wu-row.is-muted .wu-row__value {
+  color: $wu-text-secondary;
+}

@@ -1,0 +1,156 @@
+/* The /handoff route: the Storybook card, the generated artefacts, the pipeline. */
+
+.handoff {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--wu-ref-space-lg);
+}
+.handoff__card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--wu-ref-space-sm);
+  padding: var(--wu-ref-space-xl);
+  background: var(--wu-surface-raised);
+  border: var(--wu-ref-border-width-hairline) solid var(--wu-border-subtle);
+  border-radius: var(--wu-radius-container);
+}
+.handoff__card .btn {
+  margin-block: var(--wu-ref-space-sm);
+}
+
+.handoff__list {
+  margin: 0;
+  padding-left: var(--wu-ref-space-lg);
+  font: var(--wu-font-body-03);
+}
+.handoff__list li {
+  margin-bottom: var(--wu-ref-space-xs);
+  line-height: 1.5;
+}
+
+/* ---------------- Artefacts ---------------- */
+.artifacts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--wu-ref-space-md);
+}
+.artifact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-xs);
+  padding: var(--wu-ref-space-lg);
+  background: var(--wu-surface-raised);
+  border: var(--wu-ref-border-width-hairline) solid var(--wu-border-subtle);
+  border-radius: var(--wu-radius-control);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color var(--wu-ref-motion-duration-fast) var(--wu-ref-motion-ease-standard);
+}
+.artifact:hover {
+  border-color: var(--wu-border-strong);
+}
+/* A filename is a string somebody will type or compare, so it gets a monospace face. */
+.artifact__name {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: var(--wu-type-body-compact-size);
+  color: var(--wu-text-primary);
+  overflow-wrap: anywhere;
+}
+.artifact__what {
+  font: var(--wu-font-body-03);
+  color: var(--wu-text-secondary);
+}
+.artifact__platform {
+  font: var(--wu-font-label-02);
+  letter-spacing: 0.04em;
+  color: var(--wu-text-secondary);
+  background: var(--wu-surface-inset);
+  border-radius: var(--wu-radius-pill);
+  padding: 2px var(--wu-ref-space-sm);
+  align-self: flex-start;
+}
+
+/* The download glyph says what a card does before the pointer arrives. */
+.artifact__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--wu-ref-space-sm);
+}
+.artifact__top svg {
+  width: var(--wu-ref-icon-size-md);
+  height: var(--wu-ref-icon-size-md);
+  flex: none;
+  color: var(--wu-text-secondary);
+  transition:
+    color var(--wu-ref-motion-duration-fast) var(--wu-ref-motion-ease-standard),
+    transform var(--wu-ref-motion-duration-fast) var(--wu-ref-motion-ease-standard);
+}
+.artifact:hover .artifact__top svg {
+  color: var(--wu-text-primary);
+  transform: translateY(2px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .artifact:hover .artifact__top svg {
+    transform: none;
+  }
+}
+
+/* ---------------- Pipeline ---------------- */
+.pipeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.pipeline__step {
+  display: flex;
+  gap: var(--wu-ref-space-lg);
+  padding-bottom: var(--wu-ref-space-xl);
+  position: relative;
+}
+/* Drawn from the number rather than as a row border, so it stops at the last step. */
+.pipeline__step:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 32px;
+  bottom: 0;
+  width: var(--wu-ref-border-width-hairline);
+  background: var(--wu-border-subtle);
+}
+.pipeline__n {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--wu-radius-pill);
+  background: var(--wu-surface-inset);
+  font: var(--wu-font-label-02);
+  color: var(--wu-text-secondary);
+  position: relative;
+  z-index: 1;
+}
+.pipeline__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-xs);
+  max-width: 70ch;
+}
+.pipeline__what {
+  font: var(--wu-font-body-01);
+  color: var(--wu-text-primary);
+}
+.pipeline__cmd {
+  align-self: flex-start;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: var(--wu-type-caption-size);
+  background: var(--wu-surface-sunken);
+  color: var(--wu-text-primary);
+  padding: var(--wu-ref-space-xs) var(--wu-ref-space-sm);
+  border-radius: var(--wu-radius-control);
+  margin-top: var(--wu-ref-space-xs);
+}

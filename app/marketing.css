@@ -1,0 +1,545 @@
+/* The marketing surface on /site: header, hero, calculator, tracking, the two
+   photographic bands, the footer, and the scroll motion that runs on them. */
+
+/* ---------------- Header ---------------- */
+/* surface/brand-bar, one step deeper than the hero, so the two planes separate
+   without a border. It drops in once on load, the only motion not tied to scroll. */
+.mkt-header {
+  background: var(--wu-surface-brand-bar);
+  color: var(--wu-text-on-brand);
+  transform: translate3d(0, -100%, 0);
+  transition: transform var(--wu-ref-motion-duration-gentle) var(--wu-ref-motion-ease-gentle);
+}
+.mkt-header.is-in {
+  transform: none;
+}
+.mkt-header__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--wu-ref-space-xl);
+  flex-wrap: wrap;
+  padding-block: var(--wu-ref-space-lg);
+}
+.mkt-nav {
+  display: flex;
+  gap: var(--wu-ref-space-xl);
+  flex: 1;
+  flex-wrap: wrap;
+}
+.mkt-nav a {
+  font: var(--wu-font-label-01);
+  color: var(--wu-text-on-brand);
+  text-decoration: none;
+}
+
+/* The bar is fixed yellow in both modes but action/tertiary/fg themes, which
+   would put white on yellow in Dark. The on-brand pair is fixed too. */
+.mkt-header .btn--tertiary {
+  color: var(--wu-text-on-brand);
+  /* The file outlines this control a shade softer than its label. */
+  box-shadow: inset 0 0 0 1px var(--wu-border-on-brand);
+}
+.mkt-header .btn--tertiary:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--wu-text-on-brand) 10%, transparent);
+}
+.mkt-header .btn--tertiary:active:not(:disabled) {
+  background: color-mix(in srgb, var(--wu-text-on-brand) 18%, transparent);
+}
+
+/* ---------------- Hero ----------------
+   Measured from the Figma file: a flat surface/brand fill under one linear
+   wash, no photograph. */
+.hero {
+  background: var(--wu-surface-brand);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.hero__inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--wu-ref-space-4xl);
+  align-items: center;
+  padding-block: var(--wu-ref-space-5xl);
+}
+@media (min-width: 940px) {
+  .hero__inner {
+    grid-template-columns: 1fr 468px;
+  }
+}
+.hero__facts {
+  display: flex;
+  gap: var(--wu-ref-space-2xl);
+  flex-wrap: wrap;
+}
+.hero__fact {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* The ground never moves; the veil (surface/brand-veil) themes so the copy
+   stays legible in either mode. The comp fades it linearly across 1440, which
+   drops white copy under 4.5:1 past x≈500; the veil holds flat to 20% and the
+   copy column is capped to stay inside that zone. */
+.hero__wash {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(
+    to right,
+    var(--wu-surface-brand-veil) 0%,
+    var(--wu-surface-brand-veil) 20%,
+    transparent 100%
+  );
+}
+
+/* ---------------- Calculator ---------------- */
+.calc {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-lg);
+}
+.calc__breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-sm);
+  padding-left: var(--wu-ref-space-xs);
+}
+.calc__line {
+  display: flex;
+  align-items: center;
+  gap: var(--wu-ref-space-md);
+  font: var(--wu-font-body-02);
+}
+.calc__op {
+  width: 14px;
+  color: var(--wu-text-secondary);
+  flex: none;
+}
+.calc__amount {
+  width: 110px;
+  flex: none;
+  color: var(--wu-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+.calc__label {
+  flex: 1;
+  color: var(--wu-text-secondary);
+}
+
+.calc__methods {
+  display: flex;
+  gap: var(--wu-ref-space-sm);
+}
+.calc__method {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--wu-ref-space-xs);
+  padding: var(--wu-ref-space-md) var(--wu-ref-space-sm);
+  border: 1px solid var(--wu-border-subtle);
+  border-radius: var(--wu-radius-control);
+  background: var(--wu-surface-raised);
+  color: var(--wu-text-secondary);
+  font: var(--wu-font-body-03);
+  cursor: pointer;
+  transition: border-color var(--wu-ref-motion-duration-fast) var(--wu-ref-motion-ease-standard);
+}
+.calc__method svg {
+  width: var(--wu-ref-icon-size-md);
+  height: var(--wu-ref-icon-size-md);
+}
+.calc__method:hover {
+  background: var(--wu-action-tertiary-bg-hover);
+}
+.calc__method[aria-pressed='true'] {
+  color: var(--wu-text-primary);
+  border-color: var(--wu-border-strong);
+  box-shadow: inset 0 0 0 1px var(--wu-border-strong);
+}
+
+/* ---------------- Track widget ---------------- */
+.track {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-lg);
+  max-width: 560px;
+}
+/* Aligned to the control, not the labelled group, so the button matches the
+   48px control beside it. */
+.track__form {
+  display: flex;
+  gap: var(--wu-ref-space-md);
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+.track__form .field {
+  flex: 1;
+  min-width: 240px;
+}
+.track__form .btn {
+  height: 48px;
+  align-self: flex-end;
+  padding-block: 0;
+}
+.track__result {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-lg);
+  padding: var(--wu-ref-space-xl);
+  background: var(--wu-surface-raised);
+  border: 1px solid var(--wu-border-subtle);
+  border-radius: var(--wu-radius-container);
+}
+.track__head {
+  display: flex;
+  align-items: center;
+  gap: var(--wu-ref-space-md);
+  flex-wrap: wrap;
+}
+.track__chips {
+  display: flex;
+  gap: var(--wu-ref-space-sm);
+  flex-wrap: wrap;
+}
+.track__chip {
+  font: var(--wu-font-body-03);
+  font-family: ui-monospace, monospace;
+  padding: var(--wu-ref-space-xs) var(--wu-ref-space-md);
+  border-radius: var(--wu-radius-pill);
+  border: 1px solid var(--wu-border-subtle);
+  background: var(--wu-surface-sunken);
+  color: var(--wu-text-secondary);
+  cursor: pointer;
+}
+.track__chip:hover {
+  color: var(--wu-text-primary);
+  border-color: var(--wu-border-default);
+}
+
+/* ---------------- Payout methods ---------------- */
+.methods {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--wu-ref-space-xl);
+}
+.method__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--wu-radius-control);
+  background: var(--wu-surface-brand);
+  color: var(--wu-text-on-brand);
+  display: grid;
+  place-items: center;
+  margin-bottom: var(--wu-ref-space-lg);
+}
+.method__icon svg {
+  width: var(--wu-ref-icon-size-lg);
+  height: var(--wu-ref-icon-size-lg);
+}
+
+/* ---------------- Footer ---------------- */
+.mkt-footer {
+  background: var(--wu-surface-fixed-dark);
+  color: var(--wu-text-on-fixed-dark);
+}
+.mkt-footer__inner {
+  padding-block: var(--wu-ref-space-5xl) var(--wu-ref-space-4xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-2xl);
+}
+.mkt-footer__cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--wu-ref-space-4xl);
+}
+.mkt-footer h3 {
+  font: var(--wu-font-label-02);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--wu-text-on-fixed-dark);
+  margin: 0 0 var(--wu-ref-space-md);
+}
+.mkt-footer ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-md);
+}
+.mkt-footer li {
+  font: var(--wu-font-body-02);
+  color: var(--wu-text-on-fixed-dark-secondary);
+}
+.mkt-footer hr {
+  border: 0;
+  border-top: 1px solid var(--wu-border-on-fixed-dark);
+  margin: 0;
+}
+.mkt-footer__legal {
+  font: var(--wu-font-body-03);
+  color: var(--wu-text-on-fixed-dark-secondary);
+}
+
+/* ---------------- Media surfaces ----------------
+   A photograph has no single value and does not theme, so text on it is only
+   legible if a veil guarantees the ground. The veil is surface/media-veil and
+   it themes; the copy on it takes the themed text pair to match. */
+.media {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+/* Parallax by oversizing, not zooming: with motion on, the photograph is one
+   travel taller and pulled up by half of it, so the crop is the Figma crop at
+   rest, in motion, and for a reduced-motion visitor alike. --p is written only
+   by components/Motion.tsx. */
+.media__shot {
+  --p: 0px;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  transform: translate3d(0, var(--p), 0) scaleX(var(--flip-x, 1));
+  will-change: transform;
+}
+.js-parallax .media__shot {
+  height: calc(100% + var(--wu-ref-motion-travel-parallax));
+  top: calc(var(--wu-ref-motion-travel-parallax) / -2);
+}
+
+/* Mandatory on every .media: a band with no scrim is a contrast bug waiting
+   for the next photograph. */
+.media__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* stop-color and stop-opacity are CSS properties inside SVG, so the veil themes
+   through the same variable as the rest of the page. */
+.scrim-stop {
+  stop-color: var(--wu-surface-media-veil);
+}
+.scrim-stop--clear {
+  stop-opacity: 0;
+}
+.scrim-stop--solid {
+  stop-opacity: 1;
+}
+
+/* Layer opacities read off the Figma fills. Band 1's radial is the one value
+   that differs between the two frames, so it is the only one that themes. */
+:root {
+  --band-quote-radial: 0.45;
+  --band-close-radial: 0.56;
+}
+
+:root[data-theme='dark'] {
+  --band-quote-radial: 0.56;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --band-quote-radial: 0.56;
+  }
+}
+
+.media__inner {
+  position: relative;
+  z-index: 2;
+}
+
+.media__title {
+  color: var(--wu-text-primary);
+}
+.media__body {
+  color: var(--wu-text-secondary);
+}
+
+/* Band 2's rectangle is mirrored in Figma (scaleX -1); the photo and the veil
+   flip together, the copy does not. */
+.media--flip {
+  --flip-x: -1;
+}
+.media--flip .media__scrim {
+  transform: scaleX(-1);
+}
+
+/* ---- the quote band ---- */
+/* 800px, not the comp's 707: at 707 the comp crops the top of the man's head.
+   Below 800 the crown stays cut; above 966 the box outgrows the photograph's
+   ratio and object-position stops working. This is a declared deviation from
+   the file. The column layout keeps the dots under the copy, not beside it. */
+.quoteband {
+  min-height: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--wu-ref-space-2xl);
+}
+.quoteband__inner {
+  display: flex;
+  justify-content: flex-end;
+  padding-block: var(--wu-ref-space-5xl);
+}
+.quoteband__col {
+  /* 480px — the comp's box, which is what puts the quote on five lines. */
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-2xl);
+}
+.quoteband__quote {
+  position: relative;
+  margin: 0;
+  color: var(--wu-text-primary);
+  font: var(--wu-font-display-h4);
+  /* The Figma node is a scaled instance off the ramp; the nearest real step
+     with looser leading gets the same five lines without a one-off type size. */
+  line-height: var(--wu-ref-line-height-4xl);
+  font-style: italic;
+  font-weight: 400;
+}
+.quoteband__mark {
+  display: block;
+  color: var(--wu-surface-brand);
+  font: var(--wu-font-display-h3);
+  line-height: 0.6;
+}
+.quoteband__mark--close {
+  text-align: right;
+}
+
+.quoteband__dots {
+  display: flex;
+  gap: var(--wu-ref-space-md);
+  justify-content: center;
+}
+.quoteband__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: var(--wu-radius-pill);
+  background: var(--wu-text-on-media);
+  opacity: 0.35;
+}
+.quoteband__dot--current {
+  opacity: 1;
+}
+
+.quoteband__by {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-xs);
+  margin-top: var(--wu-ref-space-lg);
+  font: var(--wu-font-body-02);
+  color: var(--wu-text-primary);
+}
+.quoteband__note {
+  font: var(--wu-font-body-03);
+  color: var(--wu-text-secondary);
+}
+.quoteband__note a {
+  color: inherit;
+  text-underline-offset: 3px;
+}
+.quoteband__note a:hover {
+  color: var(--wu-text-primary);
+}
+
+/* ---- the closing band ---- */
+.closeband {
+  min-height: 705px;
+  display: flex;
+  align-items: center;
+}
+.closeband__inner {
+  padding-block: var(--wu-ref-space-5xl);
+}
+.closeband__col {
+  /* 640px: the comp's body box, which sets the Figma's line breaks. */
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-xl);
+}
+
+@media (max-width: 940px) {
+  .quoteband__inner {
+    justify-content: flex-start;
+  }
+  .quoteband,
+  .closeband {
+    min-height: 0;
+  }
+}
+
+/* ---------------- Scroll reveal ----------------
+   Fade with a blur that resolves, never a bounce. A short travel on a long,
+   gentle curve: the stagger overlaps almost entirely, so a group breathes in
+   together instead of clicking into place item by item. */
+[data-reveal] {
+  opacity: 0;
+  filter: blur(var(--wu-ref-blur-hint));
+  transform: translate3d(0, 6px, 0);
+  transition:
+    opacity var(--wu-ref-motion-duration-gentle) var(--wu-ref-motion-ease-gentle),
+    filter var(--wu-ref-motion-duration-gentle) var(--wu-ref-motion-ease-gentle),
+    transform var(--wu-ref-motion-duration-gentle) var(--wu-ref-motion-ease-gentle);
+  transition-delay: calc(var(--wu-ref-motion-stagger-base) * var(--i, 0));
+}
+
+[data-reveal].is-in {
+  opacity: 1;
+  filter: blur(0);
+  transform: none;
+}
+
+/* Objects — the calculator, the method cards, the footer mark — resolve from a
+   slight scale. 0.975: any smaller and a wide card reads as pushed, not arriving. */
+[data-reveal='zoom'] {
+  opacity: 0;
+  filter: blur(var(--wu-ref-blur-hint));
+  transform: scale(0.975) translate3d(0, 6px, 0);
+  transform-origin: center;
+  transition:
+    opacity var(--wu-ref-motion-duration-gentle) var(--wu-ref-motion-ease-gentle),
+    filter var(--wu-ref-motion-duration-gentle) var(--wu-ref-motion-ease-gentle),
+    transform var(--wu-ref-motion-duration-gentle) var(--wu-ref-motion-ease-gentle);
+  transition-delay: calc(var(--wu-ref-motion-stagger-base) * var(--i, 0));
+}
+
+[data-reveal='zoom'].is-in {
+  opacity: 1;
+  filter: blur(0);
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js-parallax .media__shot {
+    height: 100%;
+    top: 0;
+    --p: 0px !important;
+  }
+  [data-reveal],
+  [data-reveal='zoom'] {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+  .mkt-header {
+    transform: none;
+  }
+}

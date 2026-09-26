@@ -1,0 +1,689 @@
+/* Shared components. Colour, type, space and radius come from tokens. The
+   literals left are artwork, not interface: the payment card's sheen, chip and
+   seal, declared once as custom properties at the top of the card's block. */
+
+/* ---------------- Demo banner ---------------- */
+.demo-banner {
+  background: var(--wu-feedback-warning-bg);
+  color: var(--wu-feedback-warning-fg);
+  font: var(--wu-font-body-03);
+  padding: var(--wu-ref-space-sm) var(--wu-ref-space-lg);
+  text-align: center;
+}
+.demo-banner strong {
+  font-weight: 500;
+}
+
+/* ---------------- Site nav ---------------- */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: var(--wu-ref-space-lg);
+  flex-wrap: wrap;
+  padding: var(--wu-ref-space-md) var(--wu-ref-space-lg);
+  background: var(--wu-surface-page);
+  border-bottom: 1px solid var(--wu-border-subtle);
+}
+.site-nav__links {
+  display: flex;
+  gap: var(--wu-ref-space-xs);
+  flex: 1;
+  flex-wrap: wrap;
+}
+.site-nav__link {
+  font: var(--wu-font-label-01);
+  color: var(--wu-text-secondary);
+  text-decoration: none;
+  padding: var(--wu-ref-space-xs) var(--wu-ref-space-md);
+  border-radius: var(--wu-radius-control);
+}
+.site-nav__link:hover {
+  background: var(--wu-action-tertiary-bg-hover);
+  color: var(--wu-text-primary);
+}
+.site-nav__link[aria-current='page'] {
+  background: var(--wu-surface-sunken);
+  color: var(--wu-text-primary);
+}
+
+/* Below 768 the nav wraps to two lines; sticky, it would sit over the content it serves. */
+@media (max-width: 768px) {
+  .site-nav {
+    position: static;
+  }
+}
+
+/* ---------------- Payment card ----------------
+   Fixed-dark rather than a themed surface: a card is an object, not a plane of
+   the interface. The layers follow the Figma card (node 49:66). */
+.paycard {
+  /* Artwork: the specular light of a physical object, not semantic colour. */
+  --paycard-sheen-1: rgba(23, 23, 23, 0.2);
+  --paycard-sheen-2: rgba(102, 102, 102, 0.2);
+  --paycard-sheen-3: rgba(0, 0, 0, 0.2);
+  --paycard-chip-highlight: #fff;
+  --paycard-chip-shade: rgba(0, 0, 0, 0.72);
+  --paycard-seal-gold-1: #c7ad00;
+  --paycard-seal-gold-2: #907d00;
+  --paycard-seal-gold-3: #746500;
+  --paycard-seal-gold-4: #584c00;
+  --paycard-seal-glow: #fff;
+
+  position: relative;
+  width: 100%;
+  max-width: 328px;
+  aspect-ratio: 1.586; /* ISO/IEC 7810 ID-1, 85.6 x 53.98 mm */
+  border-radius: var(--wu-ref-radius-md);
+  background:
+    linear-gradient(
+      120.0823539282681deg,
+      var(--paycard-sheen-1) 0%,
+      var(--paycard-sheen-2) 68.099%,
+      var(--paycard-sheen-3) 97.801%
+    ),
+    linear-gradient(180deg, var(--paycard-sheen-3) 0%, var(--paycard-sheen-2) 100%),
+    var(--wu-surface-fixed-dark);
+  box-shadow: var(--wu-elevation-md);
+  overflow: hidden;
+}
+.paycard__inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: var(--wu-ref-space-xl);
+  transition: opacity var(--wu-ref-motion-duration-base) var(--wu-ref-motion-ease-standard);
+}
+.paycard[data-state='frozen'] .paycard__inner {
+  opacity: 0.32;
+}
+
+.paycard__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--wu-ref-space-md);
+}
+/* 10px sits between space/sm and space/md; it is the card artwork's own measure. */
+.paycard__marks {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.paycard__chip {
+  position: relative;
+  width: 34px;
+  height: 26px;
+  flex: none;
+  border-radius: var(--wu-ref-radius-xs);
+  background: var(--wu-surface-brand);
+  /* A hard highlight on the right and a wide shade from the left read as plated metal. */
+  box-shadow:
+    inset -2px 0 6px 0 var(--paycard-chip-highlight),
+    inset 10px 0 12px 0 var(--paycard-chip-shade);
+  overflow: hidden;
+}
+.paycard__chip i {
+  position: absolute;
+  background: var(--wu-surface-fixed-dark);
+  opacity: 0.35;
+}
+.paycard__chip i:nth-child(1) {
+  left: 0;
+  top: 8px;
+  width: 100%;
+  height: 1.5px;
+}
+.paycard__chip i:nth-child(2) {
+  left: 0;
+  top: 16px;
+  width: 100%;
+  height: 1.5px;
+}
+.paycard__chip i:nth-child(3) {
+  left: 13px;
+  top: 0;
+  width: 1.5px;
+  height: 100%;
+}
+
+/* Outer box at the size the layout reserves, leaf overflowing by exactly the
+   stroke (7.55% / 5%) or blur (1.28% / 1.87%) bleed. One box would move the glyph. */
+.paycard__wave,
+.paycard__chevron {
+  position: relative;
+  flex: none;
+  display: block;
+}
+.paycard__wave {
+  width: 13.252px;
+  height: 20px;
+}
+.paycard__chevron {
+  width: 78.4px;
+  height: 53.6px;
+}
+.paycard__wave svg,
+.paycard__chevron svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+.paycard__wave svg {
+  inset: -5% -7.55%;
+  width: 115.1%;
+  height: 110%;
+}
+.paycard__chevron svg {
+  inset: -1.87% -1.28%;
+  width: 102.55%;
+  height: 103.73%;
+}
+
+.paycard__bottom {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-lg);
+}
+.paycard__number {
+  margin: 0;
+  font: var(--wu-font-display-h6);
+  /* The ramp has no tabular role; card digits need even advance width. */
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 1.5px;
+  color: var(--wu-text-on-fixed-dark);
+  white-space: nowrap;
+}
+.paycard__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--wu-ref-space-2xl);
+}
+/* flex: 1 0 0, not content width: only a constrained cell lets a long name
+   truncate instead of pushing Expires off the card. */
+.paycard__cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-2xs);
+  flex: 1 0 0;
+  min-width: 0;
+}
+.paycard__cell--end {
+  align-items: flex-end;
+  text-align: right;
+  flex: none;
+}
+.paycard__label {
+  font: var(--wu-font-label-02);
+  text-transform: uppercase;
+  color: var(--wu-text-on-fixed-dark-secondary);
+}
+.paycard__value {
+  font: var(--wu-font-body-02);
+  color: var(--wu-text-on-fixed-dark);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Fixed colours, like the surface under them: a feedback pair would theme and
+   drift away from a card that does not. Left is a percentage, not the Figma's
+   127px, so the seal stays put when the word or the font changes. */
+.paycard__status {
+  position: absolute;
+  top: 39px;
+  left: 38.7%;
+  font: var(--wu-font-label-02);
+  text-transform: uppercase;
+  color: var(--wu-text-on-brand);
+  /* Figma's ellipse is rotated, which radial-gradient() cannot express; on a
+     74x24 pill the rotation moves less than a pixel, so CSS is enough here. */
+  background: radial-gradient(
+    35px 55px at 65.5% 100%,
+    var(--wu-surface-brand) 0%,
+    var(--paycard-seal-gold-1) 54.808%,
+    var(--paycard-seal-gold-2) 77.404%,
+    var(--paycard-seal-gold-3) 88.702%,
+    var(--paycard-seal-gold-4) 100%
+  );
+  box-shadow: inset 0 0 12px 0 var(--paycard-seal-glow);
+  border-radius: var(--wu-radius-pill);
+  padding: var(--wu-ref-space-xs) var(--wu-ref-space-md);
+}
+
+/* ---------------- Theme switch ---------------- */
+.themeswitch {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+  flex: none;
+  width: 64px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--wu-radius-pill);
+  background: var(--wu-surface-sunken);
+  box-shadow: inset 0 0 0 1px var(--wu-border-subtle);
+  cursor: pointer;
+}
+.themeswitch__thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 30px;
+  height: 26px;
+  border-radius: var(--wu-radius-pill);
+  background: var(--wu-surface-raised);
+  box-shadow: var(--wu-elevation-sm);
+  transition: transform var(--wu-ref-motion-duration-fast) var(--wu-ref-motion-ease-standard);
+}
+.themeswitch[data-state='dark'] .themeswitch__thumb {
+  transform: translateX(28px);
+}
+.themeswitch__slot {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+.themeswitch__slot svg {
+  width: var(--wu-ref-icon-size-sm);
+  height: var(--wu-ref-icon-size-sm);
+  color: var(--wu-text-secondary);
+  transition: color var(--wu-ref-motion-duration-fast) var(--wu-ref-motion-ease-standard);
+}
+/* Matched by an explicit side, not by position: the thumb is also a span, so
+   :first-of-type would pick it and the light rule would match nothing. */
+.themeswitch[data-state='light'] .themeswitch__slot[data-side='light'] svg,
+.themeswitch[data-state='dark'] .themeswitch__slot[data-side='dark'] svg {
+  color: var(--wu-text-primary);
+}
+
+/* ---------------- Mark ---------------- */
+/* Height is set per surface; width follows the intrinsic ratio. */
+.mark {
+  height: 26px;
+  width: auto;
+  flex: none;
+  display: block;
+}
+.mkt-header .mark {
+  height: 34px;
+}
+.mkt-footer .mark {
+  height: 38px;
+}
+
+/* ---------------- Button ---------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--wu-ref-space-xs);
+  border: 0;
+  border-radius: var(--wu-radius-control);
+  font: var(--wu-font-label-01);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color var(--wu-ref-motion-duration-fast) var(--wu-ref-motion-ease-standard);
+}
+.btn--lg {
+  padding: var(--wu-ref-space-md) var(--wu-ref-space-xl);
+}
+.btn--md {
+  padding: var(--wu-ref-space-sm) var(--wu-ref-space-lg);
+}
+.btn--block {
+  width: 100%;
+}
+.btn__icon {
+  flex: none;
+}
+.btn--lg .btn__icon {
+  width: var(--wu-ref-icon-size-md);
+  height: var(--wu-ref-icon-size-md);
+}
+.btn--md .btn__icon {
+  width: var(--wu-ref-icon-size-sm);
+  height: var(--wu-ref-icon-size-sm);
+}
+
+.btn--primary {
+  background: var(--wu-action-primary-bg);
+  color: var(--wu-action-primary-fg);
+}
+.btn--primary:hover:not(:disabled) {
+  background: var(--wu-action-primary-bg-hover);
+}
+.btn--primary:active:not(:disabled) {
+  background: var(--wu-action-primary-bg-active);
+}
+.btn--primary:disabled {
+  background: var(--wu-action-primary-bg-disabled);
+  color: var(--wu-action-primary-fg-disabled);
+}
+
+.btn--secondary {
+  background: var(--wu-action-secondary-bg);
+  color: var(--wu-action-secondary-fg);
+}
+.btn--secondary:hover:not(:disabled) {
+  background: var(--wu-action-secondary-bg-hover);
+}
+.btn--secondary:active:not(:disabled) {
+  background: var(--wu-action-secondary-bg-active);
+}
+.btn--secondary:disabled {
+  background: var(--wu-action-secondary-bg-disabled);
+  color: var(--wu-action-secondary-fg-disabled);
+}
+
+.btn--tertiary {
+  background: var(--wu-action-tertiary-bg);
+  color: var(--wu-action-tertiary-fg);
+  box-shadow: inset 0 0 0 1px var(--wu-border-default);
+}
+.btn--tertiary:hover:not(:disabled) {
+  background: var(--wu-action-tertiary-bg-hover);
+}
+.btn--tertiary:active:not(:disabled) {
+  background: var(--wu-action-tertiary-bg-active);
+}
+.btn--tertiary:disabled {
+  color: var(--wu-action-tertiary-fg-disabled);
+  box-shadow: inset 0 0 0 1px var(--wu-border-subtle);
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+}
+
+/* ---------------- Input ---------------- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-sm);
+}
+/* No text-transform: Figma text styles cannot carry one, so caps in the file
+   are typed characters, and the rule stays only on selectors typed in caps. */
+.field__label {
+  font: var(--wu-font-label-02);
+  letter-spacing: 0.04em;
+  color: var(--wu-text-secondary);
+}
+.field__control {
+  display: flex;
+  align-items: center;
+  gap: var(--wu-ref-space-sm);
+  background: var(--wu-surface-raised);
+  border-radius: var(--wu-radius-control);
+  padding: var(--wu-ref-space-md) var(--wu-ref-space-xs) var(--wu-ref-space-md)
+    var(--wu-ref-space-lg);
+  box-shadow: inset 0 0 0 1px var(--wu-border-default);
+}
+/* Focus is an outline so it stacks with the error state's box-shadow instead of replacing it. */
+.field__control:focus-within {
+  outline: var(--wu-ref-border-width-thick) solid var(--wu-border-focus);
+  outline-offset: var(--wu-ref-space-2xs);
+}
+.field__input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  font: var(--wu-font-body-01);
+  color: var(--wu-text-primary);
+}
+.field__input:focus {
+  outline: none;
+}
+.field__input::placeholder {
+  color: var(--wu-text-secondary);
+}
+/* The helper is a <p>; without margin: 0 it carries the browser's default 1em margins. */
+.field__help {
+  font: var(--wu-font-body-03);
+  color: var(--wu-text-secondary);
+  margin: 0;
+}
+
+/* An error field is TINTED, not merely outlined: a state that lives only on a
+   2px border dies at a glance that never reaches the border. Five roles, five
+   tokens — ground, inset, value, border, and the words around it. */
+.field--error .field__control {
+  background: var(--wu-feedback-error-surface);
+  box-shadow: inset 0 0 0 2px var(--wu-feedback-error-fg);
+}
+.field--error .field__input {
+  color: var(--wu-feedback-error-text);
+}
+.field--error .field__input::placeholder {
+  color: var(--wu-feedback-error-text-secondary);
+}
+.field--error .selectwrap select {
+  background: var(--wu-feedback-error-inset);
+}
+/* Label and helper sit on the PAGE, not on the tinted ground — which is the only
+   reason this colour clears 4.5:1. Inside the field it would read 3.36:1. */
+.field--error .field__help {
+  color: var(--wu-feedback-error-text-secondary);
+}
+.field--error .field__label {
+  color: var(--wu-feedback-error-text-secondary);
+}
+
+.field--disabled .field__control {
+  background: var(--wu-surface-disabled);
+  box-shadow: inset 0 0 0 1px var(--wu-border-subtle);
+}
+.field--disabled .field__input {
+  color: var(--wu-text-disabled);
+}
+/* The value is inactive and exempt; the help text explains why, so it must stay readable. */
+.field--disabled .field__help {
+  color: var(--wu-text-secondary);
+}
+
+/* ---------------- Currency select ---------------- */
+.selectwrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.selectwrap select {
+  appearance: none;
+  font: var(--wu-font-label-01);
+  color: var(--wu-text-primary);
+  /* It lives INSIDE the field, so it is inset, not sunken. */
+  background: var(--wu-surface-inset);
+  border: 1px solid var(--wu-border-subtle);
+  border-radius: var(--wu-radius-control);
+  padding: var(--wu-ref-space-sm) var(--wu-ref-space-2xl) var(--wu-ref-space-sm)
+    var(--wu-ref-space-md);
+  cursor: pointer;
+}
+.selectwrap svg {
+  position: absolute;
+  right: var(--wu-ref-space-md);
+  width: 12px;
+  height: 12px;
+  color: var(--wu-text-secondary);
+  pointer-events: none;
+}
+
+/* ---------------- Badge ---------------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font: var(--wu-font-label-02);
+  letter-spacing: 0.04em;
+  /* Sentence case, as typed in the file: "Delivered", not "DELIVERED". */
+  border-radius: var(--wu-radius-pill);
+  padding: var(--wu-ref-space-xs) var(--wu-ref-space-md);
+  white-space: nowrap;
+}
+.badge--info {
+  background: var(--wu-feedback-info-bg);
+  color: var(--wu-feedback-info-fg);
+}
+.badge--success {
+  background: var(--wu-feedback-success-bg);
+  color: var(--wu-feedback-success-fg);
+}
+.badge--error {
+  background: var(--wu-feedback-error-bg);
+  color: var(--wu-feedback-error-fg);
+}
+.badge--warning {
+  background: var(--wu-feedback-warning-bg);
+  color: var(--wu-feedback-warning-fg);
+}
+
+/* ---------------- Card / surfaces ---------------- */
+.card {
+  background: var(--wu-surface-raised);
+  border: 1px solid var(--wu-border-subtle);
+  border-radius: var(--wu-radius-container);
+  padding: var(--wu-ref-space-xl);
+}
+.card--elevated {
+  box-shadow: var(--wu-elevation-sm);
+}
+.card--floating {
+  box-shadow: var(--wu-elevation-md);
+}
+
+/* ---------------- Detail row ---------------- */
+.detail-row {
+  display: flex;
+  gap: var(--wu-ref-space-md);
+  align-items: baseline;
+}
+.detail-row__label {
+  flex: 1;
+  font: var(--wu-font-body-03);
+  color: var(--wu-text-secondary);
+}
+.detail-row__value {
+  font: var(--wu-font-body-03);
+  color: var(--wu-text-primary);
+  text-align: right;
+}
+.detail-row--muted .detail-row__value {
+  color: var(--wu-text-secondary);
+}
+
+/* ---------------- List row ---------------- */
+.list {
+  background: var(--wu-surface-raised);
+  border: 1px solid var(--wu-border-subtle);
+  border-radius: var(--wu-radius-container);
+  overflow: hidden;
+}
+.list-row {
+  display: flex;
+  align-items: center;
+  gap: var(--wu-ref-space-lg);
+  flex-wrap: wrap;
+  padding: var(--wu-ref-space-lg) var(--wu-ref-space-xl);
+}
+.list-row + .list-row {
+  border-top: 1px solid var(--wu-border-subtle);
+}
+.list-row__identity {
+  flex: 1;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.list-row__primary {
+  font: var(--wu-font-body-02);
+  color: var(--wu-text-primary);
+}
+.list-row__secondary {
+  font: var(--wu-font-body-03);
+  color: var(--wu-text-secondary);
+}
+.list-row__amount {
+  font: var(--wu-font-body-01);
+  color: var(--wu-text-primary);
+}
+
+/* ---------------- Timeline ---------------- */
+.timeline {
+  display: flex;
+  flex-direction: column;
+}
+.tl-step {
+  display: flex;
+  gap: var(--wu-ref-space-lg);
+}
+.tl-step__gutter {
+  width: 20px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--wu-ref-space-xs);
+}
+.tl-step__dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex: none;
+}
+.tl-step__line {
+  width: 2px;
+  flex: 1;
+  min-height: var(--wu-ref-space-3xl);
+}
+.tl-step__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-bottom: var(--wu-ref-space-xl);
+}
+.tl-step__title {
+  font: var(--wu-font-body-01);
+  color: var(--wu-text-primary);
+}
+.tl-step__when {
+  font: var(--wu-font-body-03);
+  color: var(--wu-text-secondary);
+}
+
+.tl-step--done .tl-step__dot {
+  background: var(--wu-feedback-success-fg);
+}
+.tl-step--done .tl-step__line {
+  background: var(--wu-feedback-success-fg);
+}
+.tl-step--active .tl-step__dot {
+  background: var(--wu-feedback-info-fg);
+  width: 16px;
+  height: 16px;
+}
+.tl-step--active .tl-step__line {
+  background: var(--wu-border-subtle);
+}
+.tl-step--pending .tl-step__dot {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px var(--wu-border-default);
+}
+.tl-step--pending .tl-step__line {
+  background: var(--wu-border-subtle);
+}
+/* Pending is still readable text, so it takes secondary rather than disabled. */
+.tl-step--pending .tl-step__title,
+.tl-step--pending .tl-step__when {
+  color: var(--wu-text-secondary);
+}

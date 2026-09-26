@@ -1,0 +1,47 @@
+{
+  "name": "verion-west",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A design-system study: one token source, exported from Figma, driving a Next.js showcase and an Angular component library.",
+  "license": "MIT",
+  "workspaces": [
+    "angular"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "tokens": "node scripts/build-tokens.mjs",
+    "dev": "npm run tokens && next dev",
+    "storybook": "npm run storybook -w @verion-west/angular",
+    "build:storybook": "npm run build -w @verion-west/angular",
+    "build:lib": "npm run build:lib -w @verion-west/angular",
+    "build": "npm run tokens && npm run build:storybook && next build",
+    "start": "next start",
+    "start:qa": "next start -p 3210",
+    "lint": "eslint . && npm run lint -w @verion-west/angular",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test \"tests/**/*.test.mjs\" && node qa/verify-personas.mjs && npm test -w @verion-west/angular",
+    "test:e2e": "node qa/verify-theme-sync.mjs && node qa/a11y.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "next": "^16.3.5",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "axe-core": "^4.13.0",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.6",
+    "playwright": "^1.63.0",
+    "prettier": "^3.9.9",
+    "style-dictionary": "^5.5.3",
+    "typescript": "~5.9.3"
+  }
+}

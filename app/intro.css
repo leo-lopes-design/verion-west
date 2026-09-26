@@ -1,0 +1,270 @@
+/* The opening: a title beat, not a loader. Brand yellow ground, the mark
+   assembling on it, then gone. An overlay, so the page below is mounted and
+   reachable the whole time. surface/brand is fixed in both modes, so the mark
+   takes text/on-brand, the same fixed pairing the marketing header uses. */
+
+.intro {
+  /* Artwork: the chromatic fringe, light and shade of the reference plates,
+     as RGB channels so each layer sets its own alpha. */
+  --intro-cyan: 0 229 255;
+  --intro-magenta: 255 0 196;
+  --intro-light: 255 255 255;
+  --intro-shade: 0 0 0;
+
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--wu-ref-space-4xl);
+  background: var(--wu-surface-brand);
+  overflow: hidden;
+  animation: intro-out var(--wu-ref-motion-duration-slow) var(--wu-ref-motion-ease-exit) forwards;
+  animation-play-state: paused;
+}
+.intro[data-phase='leaving'] {
+  animation-play-state: running;
+}
+
+@keyframes intro-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* Rainbow fringing: the signal splits its channels at high-contrast edges.
+   Once per 2.4s, three jumps inside ~100ms, on ~4% of the viewport — far from
+   the area a flash hazard needs. */
+.intro__mark {
+  width: min(380px, 62vw);
+  animation: intro-split 2400ms steps(1) infinite;
+}
+.intro__mark .mark {
+  height: auto;
+  width: 100%;
+}
+
+@keyframes intro-split {
+  0%,
+  26% {
+    filter: none;
+    transform: none;
+  }
+  27% {
+    filter: drop-shadow(2px 0 0 rgb(var(--intro-cyan) / 0.55))
+      drop-shadow(-2px 0 0 rgb(var(--intro-magenta) / 0.55));
+    transform: translateX(-1px);
+  }
+  29% {
+    filter: none;
+    transform: translateX(2px);
+  }
+  31%,
+  100% {
+    filter: none;
+    transform: none;
+  }
+}
+
+/* The assembly, in three beats on `stagger/loose`: the mark is three blocks
+   (chevron, "Verion", "West"), so the opening follows a hierarchy it already
+   has. The last beat lands at 750ms — a page-level event, not a component
+   transition. */
+.intro .mark__glyph,
+.intro .mark__line {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: intro-part var(--wu-ref-motion-duration-enter) var(--wu-ref-motion-ease-enter) forwards;
+}
+.intro .mark__glyph {
+  animation-delay: 0ms;
+}
+.intro .mark__line--1 {
+  animation-delay: var(--wu-ref-motion-stagger-loose);
+}
+.intro .mark__line--2 {
+  animation-delay: calc(var(--wu-ref-motion-stagger-loose) * 2);
+}
+
+/* Fade with a scale that resolves. Nothing translates: the gap between glyph
+   and word is 12 of 190 units, so any sideways move closes it. */
+@keyframes intro-part {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+    filter: blur(var(--wu-ref-blur-veil));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+.intro__skip {
+  margin: 0;
+  font: var(--wu-font-body-03);
+  color: var(--wu-text-on-brand);
+  opacity: 0;
+  animation:
+    intro-part var(--wu-ref-motion-duration-enter) var(--wu-ref-motion-ease-enter) forwards,
+    skip-hiss 1600ms steps(1) infinite;
+  /* The hiss waits for the entrance: two animations writing opacity at once
+     means the later one wins, and it would eat the fade-in. */
+  animation-delay:
+    calc(var(--wu-ref-motion-stagger-loose) * 6),
+    calc(var(--wu-ref-motion-stagger-loose) * 6 + var(--wu-ref-motion-duration-enter));
+}
+@keyframes skip-hiss {
+  0%,
+  62% {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+    text-shadow: none;
+  }
+  64% {
+    opacity: 0.45;
+    filter: blur(1.5px);
+    transform: translateX(-3px);
+    text-shadow:
+      2px 0 rgb(var(--intro-cyan) / 0.7),
+      -2px 0 rgb(var(--intro-magenta) / 0.7);
+  }
+  67% {
+    opacity: 1;
+    filter: blur(0.4px);
+    transform: translateX(2px);
+    text-shadow:
+      -1px 0 rgb(var(--intro-cyan) / 0.6),
+      1px 0 rgb(var(--intro-magenta) / 0.6);
+  }
+  70%,
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+    text-shadow: none;
+  }
+}
+
+/* ---- the interference, in four layers ----
+   Drawn rather than filmed: grain, horizontal banding, a tracking tear and a
+   soft bloom, all decorative and inert. */
+.intro__bloom,
+.intro__scan,
+.intro__grain,
+.intro__tear {
+  position: absolute;
+  pointer-events: none;
+}
+
+.intro__bloom {
+  inset: 0;
+  background: radial-gradient(60% 45% at 50% 42%, rgb(var(--intro-light) / 0.34), transparent 70%);
+}
+
+.intro__scan {
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(var(--intro-shade) / 0.18) 0 1px,
+    transparent 1px 3px
+  );
+  opacity: 0.6;
+  animation: scan-drift 5200ms linear infinite;
+}
+@keyframes scan-drift {
+  to {
+    background-position: 0 300px;
+  }
+}
+
+/* One SVG turbulence tile, jumped around in steps so it reads as hiss rather
+   than a sliding texture. The colour matrix turns luminance into alpha (black
+   speckle with holes), which survives a bright ground where an overlay blend
+   would vanish. The -1.05 offset puts mean alpha at 0.15: sparse speckle, and
+   the brand yellow survives. */
+.intro__grain {
+  inset: -10%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.8 0.8 0.8 0 -1.05'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  opacity: 0.5;
+  animation: grain-jitter 600ms steps(1) infinite;
+}
+@keyframes grain-jitter {
+  0% {
+    background-position: 0px 0px;
+  }
+  17% {
+    background-position: -34px 18px;
+  }
+  34% {
+    background-position: 27px -21px;
+  }
+  50% {
+    background-position: -12px -38px;
+  }
+  67% {
+    background-position: 41px 12px;
+  }
+  84% {
+    background-position: -25px 31px;
+  }
+  100% {
+    background-position: 0px 0px;
+  }
+}
+
+.intro__tear {
+  left: 0;
+  right: 0;
+  height: 16%;
+  top: -18%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgb(var(--intro-light) / 0.28) 20%,
+    rgb(var(--intro-shade) / 0.22) 56%,
+    transparent
+  );
+  filter: blur(1px);
+  animation: tear-sweep 2400ms var(--wu-ref-motion-ease-standard) infinite;
+}
+@keyframes tear-sweep {
+  0% {
+    top: -18%;
+    transform: translateX(0);
+    opacity: 0;
+  }
+  6% {
+    opacity: 1;
+  }
+  40% {
+    transform: translateX(-9px);
+  }
+  42% {
+    transform: translateX(7px);
+  }
+  44% {
+    transform: translateX(0);
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    top: 104%;
+    transform: translateX(0);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro {
+    display: none;
+  }
+}

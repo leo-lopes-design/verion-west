@@ -1,0 +1,153 @@
+/* A generic handset shell — an original drawing, not any particular product.
+   Its job is to make the prototype read as a device without pretending to be one.
+   Its colours are artwork literals: the shell is not part of the interface and
+   contributes no colour to the screen inside it. */
+
+.device {
+  --bezel: 14px;
+  --screen-w: 393px;
+  --screen-h: 852px;
+  --shell-radius: 56px;
+
+  position: relative;
+  width: calc(var(--screen-w) + var(--bezel) * 2);
+  flex: none;
+  padding: var(--bezel);
+  border-radius: var(--shell-radius);
+  background: linear-gradient(160deg, #3c3f45 0%, #16181c 38%, #0c0d10 62%, #2a2d33 100%);
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.18) inset,
+    0 0 0 1px rgba(0, 0, 0, 0.55),
+    0 30px 60px -20px rgba(0, 0, 0, 0.55),
+    0 8px 20px -8px rgba(0, 0, 0, 0.4);
+}
+
+/* thin brushed ring just inside the shell edge */
+.device::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: calc(var(--shell-radius) - 3px);
+  background: linear-gradient(200deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0) 26%);
+  pointer-events: none;
+}
+
+.device__screen {
+  position: relative;
+  width: var(--screen-w);
+  height: var(--screen-h);
+  max-width: 100%;
+  border-radius: calc(var(--shell-radius) - var(--bezel));
+  overflow: hidden;
+  background: var(--wu-surface-page);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.9);
+}
+
+/* sensor housing */
+.device__sensor {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 104px;
+  height: 26px;
+  border-radius: var(--wu-radius-pill);
+  background: #05060a;
+  z-index: 5;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+.device__sensor::after {
+  content: '';
+  position: absolute;
+  right: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #2b3550 0%, #0a0c14 70%);
+}
+
+/* home indicator */
+.device__indicator {
+  position: absolute;
+  bottom: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 134px;
+  height: 5px;
+  border-radius: var(--wu-radius-pill);
+  background: var(--wu-text-primary);
+  opacity: 0.35;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* side buttons */
+.device__btn {
+  position: absolute;
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #2e3237, #14161a);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+}
+.device__btn--silent {
+  left: -3px;
+  top: 112px;
+  height: 30px;
+}
+.device__btn--vol-up {
+  left: -3px;
+  top: 166px;
+  height: 58px;
+}
+.device__btn--vol-dn {
+  left: -3px;
+  top: 238px;
+  height: 58px;
+}
+.device__btn--power {
+  right: -3px;
+  top: 196px;
+  height: 92px;
+}
+
+/* faint diagonal glare across the glass */
+.device__glare {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background: linear-gradient(
+    108deg,
+    rgba(255, 255, 255, 0.07) 0%,
+    rgba(255, 255, 255, 0) 34%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+/* Narrow screens scale the whole device rather than shortening the 393x852
+   screen, so nothing composed for 852 is cut. The negative margin reclaims the
+   space the unscaled box still reserves. */
+@media (max-width: 480px) {
+  .device {
+    --bezel: 10px;
+    --shell-radius: 44px;
+    transform: scale(0.86);
+    transform-origin: top center;
+    margin-bottom: -122px;
+  }
+  .device__btn {
+    display: none;
+  }
+}
+
+@media (max-width: 360px) {
+  .device {
+    transform: scale(0.76);
+    margin-bottom: -209px;
+  }
+}

@@ -1,0 +1,79 @@
+@use '../../tokens/tokens' as *;
+
+:host {
+  display: block;
+}
+
+.wu-tile {
+  /* button reset: a button brings a user-agent font and border */
+  font: inherit;
+  cursor: pointer;
+  appearance: none;
+  display: flex;
+  align-items: center;
+  gap: $wu-ref-space-md;
+  width: 100%;
+  text-align: left;
+  padding: $wu-ref-space-md;
+  border: $wu-ref-border-width-hairline solid $wu-border-subtle;
+  border-radius: $wu-radius-control;
+  background: $wu-surface-raised;
+  color: $wu-text-primary;
+}
+/* Three lines of text are taller than the avatar; the avatar stays with the title. */
+.wu-tile--align-start {
+  align-items: flex-start;
+}
+/* Selected is a border, not a fill, so choosing a row never changes the contrast of its text. */
+.wu-tile.is-selected {
+  border-color: $wu-border-strong;
+  box-shadow: inset 0 0 0 $wu-ref-border-width-hairline $wu-border-strong;
+}
+
+.wu-tile__text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $wu-ref-space-2xs;
+}
+.wu-tile__title {
+  font: $wu-font-body-02;
+  color: $wu-text-primary;
+}
+.wu-tile__secondary {
+  font: $wu-font-body-03;
+  color: $wu-text-secondary;
+}
+.wu-tile__meta {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: $wu-ref-space-2xs;
+  align-items: flex-end;
+  flex: none;
+}
+.wu-tile__amount {
+  font: $wu-font-body-02;
+  color: $wu-text-primary;
+}
+
+/* inset, not sunken: recessed inside a RAISED tile, not on the page. */
+.wu-tile__icon {
+  width: $wu-ref-space-3xl;
+  height: $wu-ref-space-3xl;
+  flex: none;
+  border-radius: $wu-radius-control;
+  display: grid;
+  place-items: center;
+  background: $wu-surface-inset;
+  color: $wu-text-primary;
+}
+
+.wu-tile:hover {
+  background: $wu-action-tertiary-bg-hover;
+}
+.wu-tile:focus-visible {
+  outline: $wu-ref-border-width-thick solid $wu-border-focus;
+  outline-offset: $wu-ref-space-2xs;
+}

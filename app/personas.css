@@ -1,0 +1,352 @@
+/* The /personas route: persona cards, the casting grid, the evidence legend and
+   the JSON preview. Composed from the same semantic tokens as every other page. */
+
+.persona-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--wu-ref-space-xl);
+  align-items: start;
+}
+
+.persona {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-lg);
+}
+
+/* The sender is the only one who opens the app. Inverting the whole card says
+   "this one is not like the others", and surface/inverse flips with the theme,
+   so the emphasis survives either mode. */
+.persona--primary {
+  background: var(--wu-surface-inverse);
+  border-color: var(--wu-border-inverse);
+  color: var(--wu-text-inverse);
+}
+.persona--primary .persona__role,
+.persona--primary .persona__key,
+.persona--primary .text-secondary {
+  color: var(--wu-text-inverse-secondary);
+}
+.persona--primary .persona__job,
+.persona--primary .persona__val,
+.persona--primary .trait__text,
+.persona--primary .t-display-h5,
+.persona--primary .t-display-h6 {
+  color: var(--wu-text-inverse);
+}
+.persona--primary .persona__row,
+.persona--primary .persona__panel {
+  border-color: var(--wu-border-inverse);
+}
+/* The quote does not take the brand accent: brand yellow does not flip, and on
+   the dark-mode card it would land at 1.7:1 on white. */
+
+/* The action families theme, so on an inverted surface they invert the wrong
+   way: without these the tertiary button is black on black. The inverse pair
+   flips with the card. */
+.persona--primary .btn--secondary {
+  background: var(--wu-text-inverse);
+  color: var(--wu-surface-inverse);
+}
+.persona--primary .btn--secondary:hover:not(:disabled) {
+  background: var(--wu-text-inverse-secondary);
+}
+.persona--primary .btn--tertiary {
+  color: var(--wu-text-inverse);
+  /* border/inverse is 2.3:1 on the inverted card and misses 1.4.11; the
+     secondary inverse text colour clears 3:1 in both modes. */
+  box-shadow: inset 0 0 0 1px var(--wu-text-inverse-secondary);
+}
+.persona--primary .btn--tertiary:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--wu-text-inverse) 12%, transparent);
+}
+
+/* The portrait sits above the name. */
+.persona__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-lg);
+}
+.persona__ident {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.persona__role {
+  font: var(--wu-font-label-02);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--wu-text-secondary);
+}
+.persona__job {
+  color: var(--wu-text-secondary);
+}
+
+/* Full card width and square: at avatar size a portrait is a token gesture. */
+.persona__avatar {
+  width: 100%;
+  aspect-ratio: 1;
+  height: auto;
+  border-radius: var(--wu-radius-container);
+  object-fit: cover;
+  background: var(--wu-surface-sunken);
+  display: block;
+}
+
+/* The panel repeats the evidence mark on every row: a reader scanning a table
+   takes the number, not a caveat stated once in a header. */
+.persona__panel {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--wu-border-subtle);
+}
+.persona__row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--wu-ref-space-md);
+  padding-block: var(--wu-ref-space-sm);
+  border-bottom: 1px solid var(--wu-border-subtle);
+}
+.persona__key {
+  flex: none;
+  width: 44%;
+  font: var(--wu-font-body-03);
+  color: var(--wu-text-secondary);
+}
+.persona__val {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font: var(--wu-font-body-03);
+  color: var(--wu-text-primary);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--wu-ref-space-sm);
+}
+
+/* Tighter than the Badge the prose uses, so eight in a column do not shout
+   over the values they qualify; the smallest type role, never below it. */
+.persona__mark {
+  font: var(--wu-font-body-03);
+  line-height: 1;
+  padding: 3px var(--wu-ref-space-sm);
+  border-radius: var(--wu-radius-pill);
+  white-space: nowrap;
+  cursor: help;
+}
+.persona__mark--product {
+  background: var(--wu-feedback-success-bg);
+  color: var(--wu-feedback-success-fg);
+}
+.persona__mark--sourced {
+  background: var(--wu-feedback-info-bg);
+  color: var(--wu-feedback-info-fg);
+}
+.persona__mark--hypothesis {
+  background: var(--wu-feedback-warning-bg);
+  color: var(--wu-feedback-warning-fg);
+}
+
+.persona__take {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-sm);
+  padding-top: var(--wu-ref-space-lg);
+  border-top: 1px solid var(--wu-border-subtle);
+  margin-top: auto;
+}
+
+.trait-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-md);
+}
+.trait {
+  display: flex;
+  gap: var(--wu-ref-space-md);
+  align-items: flex-start;
+}
+/* A fixed column overflows at phone width, so it only exists above 768. */
+.trait__mark {
+  width: 104px;
+  flex: none;
+}
+.trait__text {
+  flex: 1;
+  min-width: 0;
+  font: var(--wu-font-body-03);
+  color: var(--wu-text-secondary);
+}
+.trait__text strong {
+  color: var(--wu-text-primary);
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .trait {
+    flex-direction: column;
+    gap: var(--wu-ref-space-sm);
+  }
+  .trait__mark {
+    width: auto;
+  }
+}
+
+/* ---- casting ---- */
+.cast-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--wu-ref-space-xl);
+}
+
+.cast {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-md);
+}
+
+.cast__shot {
+  width: 100%;
+  /* The width/height attributes reserve space before the bytes arrive; auto
+     height hands the shape back to aspect-ratio. */
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: var(--wu-radius-container);
+  background: var(--wu-surface-sunken);
+}
+
+.cast__caption {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-sm);
+}
+.cast__head {
+  display: flex;
+  align-items: center;
+  gap: var(--wu-ref-space-md);
+  flex-wrap: wrap;
+}
+.cast__name {
+  font: var(--wu-font-body-03);
+  font-family: ui-monospace, monospace;
+  color: var(--wu-text-secondary);
+}
+
+/* ---- the evidence legend ---- */
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-md);
+}
+.legend__row {
+  display: flex;
+  gap: var(--wu-ref-space-md);
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+.legend__row > :first-child {
+  flex: none;
+}
+
+/* ---------------- Code block ----------------
+   Themes rather than sitting permanently dark: a panel pinned to one mode
+   would contradict the page around it. Every colour resolves through syntax/*. */
+.codeblock {
+  border-radius: var(--wu-radius-container);
+  overflow: hidden;
+  background: var(--wu-surface-sunken);
+  border: 1px solid var(--wu-border-subtle);
+}
+
+.codeblock__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--wu-ref-space-md);
+  padding: var(--wu-ref-space-sm) var(--wu-ref-space-md);
+  background: var(--wu-surface-raised);
+  border-bottom: 1px solid var(--wu-border-subtle);
+}
+.codeblock__dots {
+  display: flex;
+  gap: 5px;
+  flex: none;
+}
+.codeblock__dots i {
+  width: 9px;
+  height: 9px;
+  border-radius: var(--wu-radius-pill);
+  background: var(--wu-border-default);
+  opacity: 0.55;
+}
+.codeblock__name {
+  flex: 1;
+  min-width: 0;
+  font-family: ui-monospace, monospace;
+  font-size: var(--wu-type-caption-size);
+  color: var(--wu-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.codeblock__meta {
+  flex: none;
+  font-family: ui-monospace, monospace;
+  font-size: var(--wu-type-caption-size);
+  color: var(--wu-text-secondary);
+}
+
+.codeblock__body {
+  margin: 0;
+  max-height: 300px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: var(--wu-ref-space-md) 0;
+  font-family: ui-monospace, monospace;
+  font-size: var(--wu-type-caption-size);
+  line-height: 1.65;
+  tab-size: 2;
+}
+.codeblock__body:focus-visible {
+  outline: 2px solid var(--wu-border-focus);
+  outline-offset: -2px;
+}
+.codeblock__body code {
+  display: block;
+  min-width: max-content;
+}
+
+.codeblock__line {
+  display: flex;
+  gap: var(--wu-ref-space-md);
+  padding-inline: var(--wu-ref-space-md);
+}
+.codeblock__num {
+  flex: none;
+  text-align: right;
+  color: var(--wu-text-secondary);
+  user-select: none;
+}
+.codeblock__code {
+  white-space: pre;
+  color: var(--wu-text-primary);
+}
+
+.tok--key {
+  color: var(--wu-syntax-key);
+}
+.tok--str {
+  color: var(--wu-syntax-string);
+}
+.tok--num {
+  color: var(--wu-syntax-number);
+}
+.tok--lit {
+  color: var(--wu-syntax-literal);
+}
+.tok--punct {
+  color: var(--wu-syntax-punctuation);
+}

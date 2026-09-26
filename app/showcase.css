@@ -1,0 +1,158 @@
+/* Page sections and the design-system catalogue on /. */
+
+.section {
+  padding-block: var(--wu-ref-space-5xl);
+}
+.section + .section {
+  border-top: 1px solid var(--wu-border-subtle);
+}
+.section__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-md);
+  margin-bottom: var(--wu-ref-space-2xl);
+  max-width: 68ch;
+}
+/* 68ch is a reading measure, right for the documentation routes; the marketing
+   comp sets its subheads to the full content width instead. */
+.section__head--wide {
+  max-width: none;
+}
+
+.swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--wu-ref-space-lg);
+}
+.swatch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-sm);
+}
+.swatch__chip {
+  height: 64px;
+  border-radius: var(--wu-radius-control);
+  border: 1px solid var(--wu-border-subtle);
+}
+.swatch__name {
+  font: var(--wu-font-body-03);
+  color: var(--wu-text-primary);
+  word-break: break-all;
+}
+.swatch__value {
+  font: var(--wu-font-body-03);
+  color: var(--wu-text-secondary);
+  font-family: ui-monospace, monospace;
+}
+
+.specimen-row {
+  display: flex;
+  gap: var(--wu-ref-space-2xl);
+  align-items: center;
+  flex-wrap: wrap;
+  padding-block: var(--wu-ref-space-lg);
+  border-top: 1px solid var(--wu-border-subtle);
+}
+.specimen-row__meta {
+  width: 260px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.specimen-row__token {
+  font: var(--wu-font-body-03);
+  color: var(--wu-text-link);
+  font-family: ui-monospace, monospace;
+}
+.specimen-row__sample {
+  flex: 1;
+  min-width: 0;
+  color: var(--wu-text-primary);
+}
+
+/* A fixed column never lets flex-wrap fire at phone width; release it there. */
+@media (max-width: 768px) {
+  .specimen-row__meta {
+    width: 100%;
+  }
+}
+
+.demo-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--wu-ref-space-lg);
+  align-items: center;
+}
+.ruler {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--wu-ref-space-xl);
+}
+.ruler__cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wu-ref-space-sm);
+  width: 120px;
+}
+.ruler__bar {
+  height: 32px;
+  border-radius: 2px;
+  background: var(--wu-surface-brand);
+}
+.ruler__box {
+  height: 72px;
+  background: var(--wu-surface-sunken);
+  border: 1px solid var(--wu-border-default);
+}
+
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: var(--wu-ref-space-lg);
+}
+.icon-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--wu-ref-space-sm);
+  padding: var(--wu-ref-space-lg) var(--wu-ref-space-sm);
+  border: 1px solid var(--wu-border-subtle);
+  border-radius: var(--wu-radius-control);
+  text-align: center;
+}
+.icon-cell svg {
+  width: var(--wu-ref-icon-size-lg);
+  height: var(--wu-ref-icon-size-lg);
+  color: var(--wu-text-primary);
+}
+.icon-cell span {
+  font: var(--wu-font-body-03);
+  color: var(--wu-text-secondary);
+  word-break: break-all;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font: var(--wu-font-body-02);
+}
+.table th,
+.table td {
+  text-align: left;
+  padding: var(--wu-ref-space-md);
+  border-bottom: 1px solid var(--wu-border-subtle);
+}
+.table th {
+  font: var(--wu-font-label-02);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--wu-text-secondary);
+}
+.table td.num {
+  font-family: ui-monospace, monospace;
+  text-align: right;
+}
+.table-scroll {
+  overflow-x: auto;
+}
