@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- The glyph of components/Mark.tsx on the brand bar's pair: yellow-400 surface, neutral-900 glyph. -->
+  <rect width="64" height="64" rx="14" fill="#ffdd00"/>
+  <path transform="translate(10.15 16.75) scale(0.5612)" fill="#000000" fill-rule="evenodd" clip-rule="evenodd" d="M56.2768 19.0086C53.7168 23.3641 47.4447 23 45.1355 19.0003L33.2855 0.931093L0 0.931093L26.8344 44.6392C33.8413 56.5869 45.2806 56.5869 52.2879 44.6392L78.4 0L77.7293 0.931093L44.4591 0.931093L56.2768 19.0086Z"/>
+</svg>
