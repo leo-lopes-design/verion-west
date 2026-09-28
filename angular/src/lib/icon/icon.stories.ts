@@ -22,6 +22,24 @@ type S = StoryObj<IconComponent>;
 
 export const Playground: S = {};
 
+// One story per glyph, so each icon component in Figma can link to its own story from Dev Mode.
+export const ArrowLeft: S = { name: 'arrow-left', args: { name: 'arrow-left' } };
+export const Close: S = { name: 'close', args: { name: 'close' } };
+export const ChevronDown: S = { name: 'chevron-down', args: { name: 'chevron-down' } };
+export const Check: S = { name: 'check', args: { name: 'check' } };
+export const MoreHorizontal: S = { name: 'more-horizontal', args: { name: 'more-horizontal' } };
+export const Cash: S = { name: 'cash', args: { name: 'cash' } };
+export const Bank: S = { name: 'bank', args: { name: 'bank' } };
+export const Wallet: S = { name: 'wallet', args: { name: 'wallet' } };
+export const Clock: S = { name: 'clock', args: { name: 'clock' } };
+export const Backspace: S = { name: 'backspace', args: { name: 'backspace' } };
+export const Alert: S = { name: 'alert', args: { name: 'alert' } };
+export const Shield: S = { name: 'shield', args: { name: 'shield' } };
+export const Sun: S = { name: 'sun', args: { name: 'sun' } };
+export const Moon: S = { name: 'moon', args: { name: 'moon' } };
+export const Card: S = { name: 'card', args: { name: 'card' } };
+export const Download: S = { name: 'download', args: { name: 'download' } };
+
 export const EveryGlyph: S = {
   name: 'Every glyph',
   render: () => ({

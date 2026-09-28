@@ -24,6 +24,10 @@ type StorybookIndex = { entries: Record<string, { type: string }> };
 const MANIFEST_FILE = path.join(process.cwd(), 'public', 'artifacts', 'manifest.json');
 const STORYBOOK_INDEX_FILE = path.join(process.cwd(), 'public', 'storybook', 'index.json');
 
+/* The .fig is a GitHub release asset, not a tracked file: it is binary and outside git history. */
+const FIG_URL =
+  'https://github.com/leo-lopes-design/verion-west/releases/latest/download/verion-west.fig';
+
 /** A generated file, or null when this build did not generate it. */
 function readGenerated<T>(file: string): T | null {
   try {
@@ -109,6 +113,31 @@ export default function HandoffPage() {
               {manifest.counts.themed} of them change between modes
             </p>
           )}
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------ design file */}
+      <section className="section">
+        <div className="section__head">
+          <h2 className="t-display-h4">The design file</h2>
+          <p className="t-body-01 text-secondary">
+            The Figma source: variables in both modes, the components, and the screens of the site
+            and the app. In Dev Mode every component links to its Storybook story and its Angular
+            source.
+          </p>
+        </div>
+        <div className="handoff">
+          <article className="handoff__card">
+            <p className="sectionlabel">Figma source</p>
+            <p className="t-display-h6">verion-west.fig</p>
+            <p className="t-body-03 text-secondary">
+              Opens with File → Import in any Figma account. Published as a release of the public
+              repository, so the link always serves the latest export.
+            </p>
+            <ButtonLink href={FIG_URL} size="md" icon="download" prefetch={false}>
+              Download the .fig
+            </ButtonLink>
+          </article>
         </div>
       </section>
 
